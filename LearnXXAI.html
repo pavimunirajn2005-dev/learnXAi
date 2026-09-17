@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnX AI - Smart Learning Ecosystem</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#f5f7fb;
+    color:#172033;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#111827;
+    color:white;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    overflow-y:auto;
+    padding:22px 15px;
+    z-index:20;
+}
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 10px 25px;
+}
+.logoIcon{
+    width:42px;height:42px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:#6366f1;
+    font-size:22px;
+}
+.logo h2{font-size:20px}
+.logo small{color:#9ca3af}
+
+.menuTitle{
+    color:#6b7280;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:15px 12px 7px;
+}
+.navBtn{
+    width:100%;
+    background:transparent;
+    color:#d1d5db;
+    padding:11px 13px;
+    margin:3px 0;
+    border-radius:10px;
+    text-align:left;
+    display:flex;
+    gap:11px;
+    align-items:center;
+}
+.navBtn:hover,.navBtn.active{
+    background:#252f43;
+    color:white;
+}
+.profile{
+    margin-top:20px;
+    border-top:1px solid #293244;
+    padding:18px 10px;
+}
+.avatar{
+    width:38px;height:38px;
+    background:#6366f1;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-weight:bold;
+}
+.profileRow{display:flex;align-items:center;gap:10px}
+.profile small{color:#9ca3af}
+
+/* MAIN */
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:25px;
+}
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+.topbar h1{font-size:27px}
+.topbar p{color:#6b7280;margin-top:5px}
+.mode{
+    background:white;
+    border:1px solid #e5e7eb;
+    padding:9px 13px;
+    border-radius:10px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.card{
+    background:white;
+    border:1px solid #e7eaf0;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 4px 16px rgba(15,23,42,.04);
+}
+.card h3{margin-bottom:7px}
+.muted{color:#6b7280;font-size:14px}
+
+.grid{
+    display:grid;
+    gap:16px;
+}
+.stats{
+    grid-template-columns:repeat(4,1fr);
+}
+.stat{
+    padding:20px;
+    border-radius:16px;
+    background:white;
+    border:1px solid #e7eaf0;
+}
+.statIcon{font-size:24px}
+.stat h2{margin:10px 0 3px}
+.stat p{color:#6b7280;font-size:13px}
+
+.featureGrid{
+    grid-template-columns:repeat(3,1fr);
+    margin-top:18px;
+}
+.feature{
+    min-height:150px;
+    transition:.2s;
+}
+.feature:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,.07);
+}
+.featureIcon{font-size:30px;margin-bottom:12px}
+.feature p{font-size:13px;color:#6b7280;margin-top:7px;line-height:1.5}
+.feature button{margin-top:15px}
+
+.btn{
+    background:#6366f1;
+    color:white;
+    padding:10px 15px;
+    border-radius:9px;
+}
+.btn:hover{opacity:.9}
+.btn.secondary{
+    background:#eef2ff;
+    color:#4f46e5;
+}
+.btn.green{background:#059669}
+.btn.red{background:#dc2626}
+.btn.dark{background:#111827}
+.btn.orange{background:#ea580c}
+
+.row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+.two{
+    grid-template-columns:1.4fr 1fr;
+}
+
+/* CHAT */
+.chatBox{
+    height:520px;
+    display:flex;
+    flex-direction:column;
+}
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:10px;
+}
+.msg{
+    max-width:78%;
+    padding:12px 15px;
+    border-radius:13px;
+    margin:9px 0;
+    line-height:1.55;
+    font-size:14px;
+}
+.msg.ai{
+    background:#f1f5f9;
+}
+.msg.user{
+    margin-left:auto;
+    background:#6366f1;
+    color:white;
+}
+.chatInput{
+    display:flex;
+    gap:10px;
+    border-top:1px solid #eee;
+    padding-top:12px;
+}
+.chatInput input{
+    flex:1;
+    border:1px solid #ddd;
+    padding:12px;
+    border-radius:10px;
+}
+.quick{
+    margin-bottom:12px;
+}
+
+/* NOTES */
+.upload{
+    border:2px dashed #c7d2fe;
+    background:#f8faff;
+    border-radius:15px;
+    padding:35px;
+    text-align:center;
+}
+.upload input{display:none}
+.upload label{
+    display:inline-block;
+    padding:12px 18px;
+    background:#6366f1;
+    color:white;
+    border-radius:9px;
+    margin-top:15px;
+}
+.output{
+    margin-top:18px;
+}
+.outputBox{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:12px;
+    margin-top:10px;
+    line-height:1.6;
+    font-size:14px;
+}
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+}
+.tag{
+    background:#eef2ff;
+    color:#4338ca;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+/* QUIZ */
+.quizHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+.progress{
+    height:9px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin:10px 0 20px;
+}
+.progressBar{
+    height:100%;
+    width:0;
+    background:#6366f1;
+}
+.question{
+    font-size:20px;
+    font-weight:600;
+    line-height:1.5;
+    margin:20px 0;
+}
+.options{
+    display:grid;
+    gap:10px;
+}
+.option{
+    padding:14px;
+    border:1px solid #dbe1ea;
+    background:white;
+    border-radius:10px;
+    text-align:left;
+}
+.option:hover{background:#f8fafc}
+.option.selected{
+    border:2px solid #6366f1;
+    background:#eef2ff;
+}
+.option.correct{
+    border:2px solid #10b981;
+    background:#ecfdf5;
+}
+.option.wrong{
+    border:2px solid #ef4444;
+    background:#fef2f2;
+}
+.feedback{
+    margin-top:15px;
+    padding:14px;
+    border-radius:10px;
+    display:none;
+}
+.feedback.show{display:block}
+
+/* FLASHCARDS */
+.flashcard{
+    min-height:260px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    font-size:23px;
+    padding:30px;
+    border-radius:15px;
+    cursor:pointer;
+}
+.flashcard small{
+    display:block;
+    font-size:12px;
+    color:#6b7280;
+    margin-top:15px;
+}
+
+/* VIVA */
+.vivaQuestion{
+    background:#111827;
+    color:white;
+    padding:25px;
+    border-radius:14px;
+    font-size:19px;
+    line-height:1.5;
+}
+textarea{
+    width:100%;
+    min-height:130px;
+    padding:13px;
+    border:1px solid #d8dee8;
+    border-radius:10px;
+    resize:vertical;
+    margin:15px 0;
+}
+
+/* ANALYTICS */
+.bar{
+    margin:15px 0;
+}
+.barTop{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+}
+.barTrack{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:20px;
+    margin-top:6px;
+}
+.barFill{
+    height:100%;
+    background:#6366f1;
+    border-radius:20px;
+}
+
+/* PLAN */
+.day{
+    border-left:4px solid #6366f1;
+    padding:14px;
+    background:#f8fafc;
+    margin:10px 0;
+    border-radius:8px;
+}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+}
+.modal.show{display:flex}
+.modalBox{
+    background:white;
+    width:min(700px,92%);
+    max-height:85vh;
+    overflow:auto;
+    border-radius:16px;
+    padding:25px;
+}
+.close{
+    float:right;
+    font-size:22px;
+    background:none;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:#111827;
+    color:white;
+    padding:13px 18px;
+    border-radius:10px;
+    display:none;
+    z-index:200;
+}
+.toast.show{display:block}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .featureGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:750px){
+    .sidebar{width:72px;padding:12px 8px}
+    .logo h2,.logo small,.menuTitle,.navBtn span,.profile div:not(.avatar){display:none}
+    .logo{justify-content:center}
+    .navBtn{justify-content:center}
+    .main{margin-left:72px;width:calc(100% - 72px);padding:15px}
+    .two,.featureGrid,.stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+<div class="logo">
+    <div class="logoIcon">🧠</div>
+    <div>
+        <h2>LearnX AI</h2>
+        <small>Smart Learning Ecosystem</small>
+    </div>
+</div>
+
+<div class="menuTitle">Learning</div>
+
+<button class="navBtn active" onclick="showPage('dashboard',this)">
+    🏠 <span>Dashboard</span>
+</button>
+
+<button class="navBtn" onclick="showPage('tutor',this)">
+    🤖 <span>AI Tutor</span>
+</button>
+
+<button class="navBtn" onclick="showPage('notes',this)">
+    📚 <span>Smart Notes</span>
+</button>
+
+<button class="navBtn" onclick="showPage('concept',this)">
+    🧠 <span>Concept Map</span>
+</button>
+
+<button class="navBtn" onclick="showPage('quiz',this)">
+    🎯 <span>Adaptive Quiz</span>
+</button>
+
+<button class="navBtn" onclick="showPage('revision',this)">
+    🔄 <span>Smart Revision</span>
+</button>
+
+<button class="navBtn" onclick="showPage('flashcards',this)">
+    🃏 <span>Flashcards</span>
+</button>
+
+<div class="menuTitle">Assessment</div>
+
+<button class="navBtn" onclick="showPage('exam',this)">
+    📝 <span>Exam Generator</span>
+</button>
+
+<button class="navBtn" onclick="showPage('viva',this)">
+    🎤 <span>AI Viva</span>
+</button>
+
+<button class="navBtn" onclick="showPage('analytics',this)">
+    📊 <span>Analytics</span>
+</button>
+
+<div class="menuTitle">Planning</div>
+
+<button class="navBtn" onclick="showPage('planner',this)">
+    📅 <span>Study Planner</span>
+</button>
+
+<button class="navBtn" onclick="showPage('teacher',this)">
+    👩‍🏫 <span>Teacher Mode</span>
+</button>
+
+<button class="navBtn" onclick="showPage('context',this)">
+    🔗 <span>Context & Memory</span>
+</button>
+
+<div class="profile">
+<div class="profileRow">
+<div class="avatar">P</div>
+<div>
+<strong>Pavithra</strong><br>
+<small>Student</small>
+</div>
+</div>
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="topbar">
+<div>
+<h1 id="pageTitle">Good afternoon, Pavithra 👋</h1>
+<p id="pageSubtitle">Your AI-powered personalized learning space.</p>
+</div>
+
+<select class="mode" onchange="changeMode(this.value)">
+<option>🎓 Student Mode</option>
+<option>🧑‍🏫 Teacher Mode</option>
+<option>🎤 Viva Mode</option>
+<option>💼 Interview Mode</option>
+</select>
+</div>
+
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="page active">
+
+<div class="grid stats">
+
+<div class="stat">
+<div class="statIcon">🔥</div>
+<h2 id="streak">7 Days</h2>
+<p>Learning Streak</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">🎯</div>
+<h2 id="scoreStat">82%</h2>
+<p>Average Quiz Score</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">📚</div>
+<h2>12</h2>
+<p>Topics Learned</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">🏆</div>
+<h2 id="xp">1,240 XP</h2>
+<p>Learning Points</p>
+</div>
+
+</div>
+
+
+<div class="grid featureGrid">
+
+<div class="card feature">
+<div class="featureIcon">🤖</div>
+<h3>AI Tutor</h3>
+<p>Ask questions and learn with explanations adapted to your level.</p>
+<button class="btn" onclick="openFeature('tutor')">Start Learning</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">📚</div>
+<h3>Smart Notes Analyzer</h3>
+<p>Upload study material and turn it into summaries, concepts and exam questions.</p>
+<button class="btn" onclick="openFeature('notes')">Analyze Notes</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">🎯</div>
+<h3>Adaptive Quiz</h3>
+<p>Practice dynamically and automatically move from easy to difficult questions.</p>
+<button class="btn" onclick="openFeature('quiz')">Take Quiz</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">🔄</div>
+<h3>Weak Topic Detector</h3>
+<p>Discover where you are struggling and receive targeted revision.</p>
+<button class="btn secondary" onclick="openFeature('revision')">Improve Me</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">🎤</div>
+<h3>AI Viva Simulator</h3>
+<p>Practice like a real examiner and receive technical feedback.</p>
+<button class="btn orange" onclick="openFeature('viva')">Start Viva</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">📊</div>
+<h3>Learning Analytics</h3>
+<p>Track your performance, strengths, weaknesses and improvement.</p>
+<button class="btn dark" onclick="openFeature('analytics')">View Analytics</button>
+</div>
+
+</div>
+
+
+<div class="grid two" style="margin-top:18px">
+
+<div class="card">
+<h3>💡 Today's AI Recommendation</h3>
+<p class="muted">Based on your recent learning activity</p>
+<div class="outputBox">
+🔴 <b>DBMS Normalization</b> needs improvement.<br><br>
+Your recent quiz accuracy is lower in this topic.
+<br><br>
+<button class="btn" onclick="openFeature('revision')">
+Teach Me My Weak Topic →
+</button>
+</div>
+</div>
+
+<div class="card">
+<h3>🏆 Achievements</h3>
+<div class="tags">
+<span class="tag">🔥 7 Day Streak</span>
+<span class="tag">🎯 Quiz Master</span>
+<span class="tag">📚 Note Explorer</span>
+<span class="tag">🎤 Viva Starter</span>
+</div>
+<br>
+<p class="muted">Next badge: <b>Learning Champion</b></p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- AI TUTOR -->
+<section id="tutor" class="page">
+
+<div class="card">
+<h2>🤖 AI Tutor</h2>
+<p class="muted">Ask anything about your subject.</p>
+
+<div class="quick row" style="margin-top:15px">
+<button class="btn secondary" onclick="quickAsk('Explain normalization in DBMS simply')">Explain Simply</button>
+<button class="btn secondary" onclick="quickAsk('Give me a real world example of DBMS')">Real Example</button>
+<button class="btn secondary" onclick="quickAsk('Give exam points about Python')">Exam Mode</button>
+<button class="btn secondary" onclick="quickAsk('Ask me a viva question about machine learning')">Viva Mode</button>
+</div>
+
+<div class="chatBox">
+
+<div class="messages" id="messages">
+
+<div class="msg ai">
+👋 Hi Pavithra! I'm <b>LearnX AI</b>.<br><br>
+Ask me about Python, SQL, DBMS, AI, ML, Data Analytics or any topic you're studying.
+</div>
+
+</div>
+
+<div class="chatInput">
+<input id="chatInput" placeholder="Ask LearnX AI anything..." onkeydown="if(event.key==='Enter')sendChat()">
+<button class="btn" onclick="sendChat()">Send 🚀</button>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- NOTES -->
+<section id="notes" class="page">
+
+<div class="card">
+<h2>📚 Smart Notes Analyzer</h2>
+<p class="muted">
+Upload your study material and LearnX converts it into learning resources.
+</p>
+
+<div class="upload" style="margin-top:20px">
+
+<div style="font-size:45px">📄</div>
+<h3>Drop your notes here</h3>
+<p class="muted">PDF • PPT • DOC • TXT • Image</p>
+
+<input type="file" id="fileInput" accept=".pdf,.ppt,.pptx,.doc,.docx,.txt,.jpg,.jpeg,.png">
+<label for="fileInput">Choose Study Material</label>
+
+<p id="fileName" style="margin-top:12px"></p>
+
+</div>
+
+<div class="output">
+
+<div class="grid two">
+
+<div class="card">
+<h3>✨ AI Summary</h3>
+<div class="outputBox" id="summary">
+Upload notes to generate a smart summary.
+</div>
+</div>
+
+<div class="card">
+<h3>🧠 Key Concepts</h3>
+<div class="tags" id="conceptTags">
+<span class="tag">Waiting for material...</span>
+</div>
+</div>
+
+</div>
+
+<div class="grid two" style="margin-top:16px">
+
+<div class="card">
+<h3>📝 Exam-Oriented Points</h3>
+<div class="outputBox" id="examPoints">
+Important exam points will appear here.
+</div>
+</div>
+
+<div class="card">
+<h3>❓ Generated Questions</h3>
+<div class="outputBox" id="generatedQuestions">
+Questions will be generated from your material.
+</div>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:16px">
+<h3>🎯 What should I do with these notes?</h3>
+<div class="row" style="margin-top:12px">
+<button class="btn" onclick="generateNotes('summary')">Summarize</button>
+<button class="btn secondary" onclick="generateNotes('exam')">Exam Prep</button>
+<button class="btn secondary" onclick="generateNotes('quiz')">Create Quiz</button>
+<button class="btn secondary" onclick="generateNotes('flash')">Create Flashcards</button>
+<button class="btn secondary" onclick="generateNotes('viva')">Viva Questions</button>
+</div>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- CONCEPT MAP -->
+<section id="concept" class="page">
+
+<div class="card">
+<h2>🧠 AI Concept Map</h2>
+<p class="muted">Turn a topic into a structured learning map.</p>
+
+<div class="row" style="margin-top:18px">
+<input id="conceptInput" placeholder="Enter topic e.g. Machine Learning"
+style="flex:1;padding:12px;border:1px solid #ddd;border-radius:9px">
+<button class="btn" onclick="createConceptMap()">Generate Map</button>
+</div>
+
+<div id="conceptMap" style="margin-top:25px;text-align:center">
+
+<div style="display:inline-block;background:#6366f1;color:white;padding:20px 30px;border-radius:15px">
+Enter a topic to generate your concept map
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+<section id="quiz" class="page">
+
+<div class="grid two">
+
+<div class="card">
+
+<div class="quizHeader">
+<div>
+<h2>🎯 Adaptive AI Quiz</h2>
+<p class="muted">Difficulty adapts to your performance.</p>
+</div>
+<strong id="difficulty">Easy</strong>
+</div>
+
+<div class="progress">
+<div class="progressBar" id="quizProgress"></div>
+</div>
+
+<div id="quizArea">
+
+<div class="question" id="question"></div>
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback"></div>
+
+<div class="row" style="margin-top:18px">
+<button class="btn" id="revealBtn" onclick="revealAnswer()">Reveal Answer</button>
+<button class="btn secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">
+Next Question →
+</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>📈 Quiz Performance</h3>
+
+<div class="stat" style="margin-top:15px">
+<h2 id="quizScore">0</h2>
+<p>Current Score</p>
+</div>
+
+<div class="outputBox">
+<b>Adaptive Engine</b><br><br>
+The system observes your answers and changes question difficulty.
+<br><br>
+🟢 Correct → harder question<br>
+🔴 Wrong → reinforcement question
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- REVISION -->
+<section id="revision" class="page">
+
+<div class="grid two">
+
+<div class="card">
+<h2>🔄 Smart Revision Center</h2>
+<p class="muted">Your personalized improvement area.</p>
+
+<div class="outputBox" style="margin-top:18px">
+<h3>🔴 Weak Topic Detected</h3>
+<br>
+<b>DBMS – Normalization</b>
+<br><br>
+Quiz accuracy: <b>55%</b>
+<br>
+Recommended action: Review fundamentals and practice examples.
+</div>
+
+<div class="row" style="margin-top:15px">
+<button class="btn" onclick="teachWeak()">Teach Me This</button>
+<button class="btn secondary" onclick="revisionQuiz()">Practice Again</button>
+</div>
+
+</div>
+
+<div class="card">
+<h3>💪 Your Strengths</h3>
+
+<div class="bar">
+<div class="barTop"><span>Python</span><b>91%</b></div>
+<div class="barTrack"><div class="barFill" style="width:91%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>SQL</span><b>86%</b></div>
+<div class="barTrack"><div class="barFill" style="width:86%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>Machine Learning</span><b>78%</b></div>
+<div class="barTrack"><div class="barFill" style="width:78%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>DBMS</span><b>55%</b></div>
+<div class="barTrack"><div class="barFill" style="width:55%"></div></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:18px">
+<h3>⚡ 10-Minute Revision</h3>
+
+<div class="day">
+<b>1. Recall</b><br>
+Explain 1NF, 2NF and 3NF in your own words.
+</div>
+
+<div class="day">
+<b>2. Understand</b><br>
+Study one real-world normalization example.
+</div>
+
+<div class="day">
+<b>3. Practice</b><br>
+Solve 3 normalization questions.
+</div>
+
+<div class="day">
+<b>4. Evaluate</b><br>
+Take the adaptive quiz again.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FLASHCARDS -->
+<section id="flashcards" class="page">
+
+<div class="card">
+
+<h2>🃏 AI Flashcards</h2>
+<p class="muted">Click the card to reveal the answer.</p>
+
+<div class="flashcard" id="flashcard" onclick="flipCard()" style="margin-top:20px">
+<div>
+What is normalization in DBMS?
+<small>Click to reveal answer</small>
+</div>
+</div>
+
+<div class="row" style="margin-top:15px">
+<button class="btn" onclick="previousCard()">← Previous</button>
+<button class="btn secondary" onclick="nextCard()">Next →</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- EXAM -->
+<section id="exam" class="page">
+
+<div class="card">
+
+<h2>📝 AI Exam Question Generator</h2>
+<p class="muted">Generate practice questions according to marks and difficulty.</p>
+
+<div class="grid two" style="margin-top:18px">
+
+<div>
+<label>Subject / Topic</label>
+<input id="examTopic" value="Database Management System"
+style="width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-top:7px">
+</div>
+
+<div>
+<label>Question Type</label>
+<select id="examType"
+style="width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-top:7px">
+<option>2 Mark Questions</option>
+<option>5 Mark Questions</option>
+<option>10 Mark Questions</option>
+<option>MCQ</option>
+<option>Application Based</option>
+</select>
+</div>
+
+</div>
+
+<button class="btn" style="margin-top:15px" onclick="generateExamQuestions()">
+Generate Questions 🚀
+</button>
+
+<div class="outputBox" id="examOutput">
+Your generated question bank will appear here.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- VIVA -->
+<section id="viva" class="page">
+
+<div class="grid two">
+
+<div class="card">
+
+<h2>🎤 AI Viva Simulator</h2>
+<p class="muted">The AI acts as your project examiner.</p>
+
+<div class="vivaQuestion" style="margin-top:20px" id="vivaQuestion">
+Why did you choose Vision Transformers for your project?
+</div>
+
+<textarea id="vivaAnswer" placeholder="Speak or type your answer here..."></textarea>
+
+<div class="row">
+<button class="btn" onclick="evaluateViva()">Evaluate Answer</button>
+<button class="btn secondary" onclick="nextViva()">Next Question</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>📋 Viva Evaluation</h3>
+
+<div id="vivaResult" class="outputBox">
+Answer an examiner question to receive feedback.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ANALYTICS -->
+<section id="analytics" class="page">
+
+<div class="grid stats">
+
+<div class="stat">
+<div class="statIcon">📈</div>
+<h2>82%</h2>
+<p>Overall Accuracy</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">⏱️</div>
+<h2>14.5h</h2>
+<p>Learning Time</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">🎯</div>
+<h2>74</h2>
+<p>Questions Solved</p>
+</div>
+
+<div class="stat">
+<div class="statIcon">⭐</div>
+<h2>1,240</h2>
+<p>XP Earned</p>
+</div>
+
+</div>
+
+<div class="grid two" style="margin-top:18px">
+
+<div class="card">
+<h3>📊 Subject Performance</h3>
+
+<div class="bar">
+<div class="barTop"><span>Python</span><b>91%</b></div>
+<div class="barTrack"><div class="barFill" style="width:91%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>SQL</span><b>86%</b></div>
+<div class="barTrack"><div class="barFill" style="width:86%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>AI / ML</span><b>78%</b></div>
+<div class="barTrack"><div class="barFill" style="width:78%"></div></div>
+</div>
+
+<div class="bar">
+<div class="barTop"><span>DBMS</span><b>55%</b></div>
+<div class="barTrack"><div class="barFill" style="width:55%"></div></div>
+</div>
+
+</div>
+
+<div class="card">
+<h3>🧠 AI Learning Insights</h3>
+
+<div class="outputBox">
+<b>Strongest Area</b><br>
+Python programming
+</div>
+
+<div class="outputBox">
+<b>Needs Attention</b><br>
+DBMS normalization
+</div>
+
+<div class="outputBox">
+<b>Recommended Next Step</b><br>
+Take a DBMS adaptive quiz.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PLANNER -->
+<section id="planner" class="page">
+
+<div class="card">
+
+<h2>📅 AI Study Planner</h2>
+<p class="muted">Create a personalized study schedule.</p>
+
+<div class="grid two" style="margin-top:18px">
+
+<div>
+<label>Subjects</label>
+<input id="subjects" value="Python, SQL, DBMS, Machine Learning"
+style="width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-top:7px">
+</div>
+
+<div>
+<label>Hours per day</label>
+<input id="hours" type="number" value="3"
+style="width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin-top:7px">
+</div>
+
+</div>
+
+<button class="btn" style="margin-top:15px" onclick="generatePlan()">
+Create My Study Plan
+</button>
+
+<div id="studyPlan" style="margin-top:18px">
+
+<div class="day"><b>Day 1</b> — Python fundamentals + practice quiz</div>
+<div class="day"><b>Day 2</b> — SQL queries + hands-on practice</div>
+<div class="day"><b>Day 3</b> — DBMS normalization + revision</div>
+<div class="day"><b>Day 4</b> — Machine Learning concepts</div>
+<div class="day"><b>Day 5</b> — Mixed adaptive quiz</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TEACHER -->
+<section id="teacher" class="page">
+
+<div class="card">
+
+<h2>👩‍🏫 Teacher Mode</h2>
+<p class="muted">
+Turn teaching material into classroom-ready resources.
+</p>
+
+<div class="grid featureGrid" style="margin-top:20px">
+
+<div class="card feature">
+<div class="featureIcon">📋</div>
+<h3>Question Bank</h3>
+<p>Generate questions with different difficulty levels.</p>
+<button class="btn" onclick="teacherAction('question')">Generate</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">🎯</div>
+<h3>Learning Objectives</h3>
+<p>Create measurable learning objectives for a topic.</p>
+<button class="btn" onclick="teacherAction('objective')">Generate</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">🧪</div>
+<h3>Class Quiz</h3>
+<p>Create an interactive quiz for students.</p>
+<button class="btn" onclick="teacherAction('quiz')">Create</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">📊</div>
+<h3>Student Analysis</h3>
+<p>Identify common weak areas from student results.</p>
+<button class="btn" onclick="teacherAction('analysis')">Analyze</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">💡</div>
+<h3>Teaching Ideas</h3>
+<p>Get examples, activities and discussion ideas.</p>
+<button class="btn" onclick="teacherAction('ideas')">Generate</button>
+</div>
+
+<div class="card feature">
+<div class="featureIcon">📅</div>
+<h3>Lesson Planner</h3>
+<p>Generate a structured classroom lesson plan.</p>
+<button class="btn" onclick="teacherAction('lesson')">Create</button>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CONTEXT -->
+<section id="context" class="page">
+
+<div class="grid two">
+
+<div class="card">
+
+<h2>🔗 Context Engineering</h2>
+
+<div class="outputBox">
+<b>Static Context</b><br>
+Course information, subject and syllabus.
+</div>
+
+<div class="outputBox">
+<b>Dynamic Context</b><br>
+Current question, uploaded notes and quiz topic.
+</div>
+
+<div class="outputBox">
+<b>User Context</b><br>
+Learning level, previous performance and weak topics.
+</div>
+
+<div class="outputBox">
+<b>Filtered Context</b><br>
+Only relevant information is sent to the AI.
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🧠 Learning Memory</h2>
+
+<div class="outputBox">
+Current Subject: <b>Computer Science</b>
+</div>
+
+<div class="outputBox">
+Current Topic: <b>DBMS Normalization</b>
+</div>
+
+<div class="outputBox">
+Weak Area: <b>Normalization</b>
+</div>
+
+<div class="outputBox">
+Preferred Mode: <b>Exam Preparation</b>
+</div>
+
+<button class="btn" onclick="showToast('Learning context updated successfully!')">
+Update Context
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:18px">
+
+<h2>🏗️ LearnX AI Application Architecture</h2>
+
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin-top:25px">
+
+<div class="tag">👤 User</div>
+<div>→</div>
+<div class="tag">🖥️ UI</div>
+<div>→</div>
+<div class="tag">⚙️ Backend</div>
+<div>→</div>
+<div class="tag">📚 Data / API</div>
+<div>→</div>
+<div class="tag">🧠 Context</div>
+<div>→</div>
+<div class="tag">🤖 LLM</div>
+<div>→</div>
+<div class="tag">✨ AI Output</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+</div>
+
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modalBox">
+<button class="close" onclick="closeModal()">✕</button>
+<h2 id="modalTitle"></h2>
+<div id="modalContent" style="margin-top:18px;line-height:1.7"></div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================
+   NAVIGATION
+========================= */
+
+const titles={
+dashboard:["Good afternoon, Pavithra 👋","Your AI-powered personalized learning space."],
+tutor:["AI Tutor 🤖","Ask questions and learn interactively."],
+notes:["Smart Notes Analyzer 📚","Turn study material into useful learning resources."],
+concept:["AI Concept Map 🧠","Connect concepts and understand relationships."],
+quiz:["Adaptive Quiz 🎯","Practice, evaluate and improve."],
+revision:["Smart Revision 🔄","Focus on the topics that need you most."],
+flashcards:["AI Flashcards 🃏","Learn through active recall."],
+exam:["Exam Question Generator 📝","Create structured practice questions."],
+viva:["AI Viva Simulator 🎤","Practice like a real examiner."],
+analytics:["Learning Analytics 📊","Understand your learning performance."],
+planner:["AI Study Planner 📅","Plan your learning journey."],
+teacher:["Teacher Mode 👩‍🏫","Create intelligent teaching resources."],
+context:["Context & Memory 🔗","See how LearnX personalizes AI responses."]
+};
+
+function showPage(id,btn){
+
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+
+document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
+if(btn)btn.classList.add("active");
+
+document.getElementById("pageTitle").textContent=titles[id][0];
+document.getElementById("pageSubtitle").textContent=titles[id][1];
+
+window.scrollTo(0,0);
+}
+
+function openFeature(id){
+showPage(id);
+document.querySelectorAll(".navBtn").forEach(b=>{
+if(b.textContent.toLowerCase().includes(id.toLowerCase()))b.classList.add("active");
+});
+}
+
+function changeMode(mode){
+showToast(mode+" activated");
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(text){
+const t=document.getElementById("toast");
+t.textContent=text;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+
+/* =========================
+   AI TUTOR
+========================= */
+
+function addMessage(text,type){
+
+const box=document.getElementById("messages");
+
+const div=document.createElement("div");
+div.className="msg "+type;
+div.innerHTML=text;
+
+box.appendChild(div);
+box.scrollTop=box.scrollHeight;
+}
+
+function sendChat(){
+
+const input=document.getElementById("chatInput");
+const text=input.value.trim();
+
+if(!text)return;
+
+addMessage(text,"user");
+input.value="";
+
+setTimeout(()=>{
+addMessage(generateAIResponse(text),"ai");
+},500);
+}
+
+function quickAsk(text){
+document.getElementById("chatInput").value=text;
+sendChat();
+}
+
+function generateAIResponse(q){
+
+q=q.toLowerCase();
+
+if(q.includes("normalization")){
+return `
+<b>DBMS Normalization – Simple Explanation</b><br><br>
+Normalization is the process of organizing database tables to reduce duplicate data and improve data consistency.<br><br>
+<b>Example:</b> Instead of storing the same student department information repeatedly, we separate related data into suitable tables.<br><br>
+<b>Exam points:</b><br>
+• Reduces data redundancy<br>
+• Improves consistency<br>
+• Avoids update anomalies<br>
+• Uses normal forms such as 1NF, 2NF and 3NF
+`;
+}
+
+if(q.includes("python")){
+return `
+<b>Python</b> is a high-level, interpreted programming language known for simple syntax and a large ecosystem of libraries.<br><br>
+<b>Common uses:</b> Data Analytics, AI/ML, automation, web development and scripting.<br><br>
+<b>Example:</b><br>
+<code>numbers = [3,1,2]<br>print(sorted(numbers))</code>
+`;
+}
+
+if(q.includes("machine learning") || q.includes("ml")){
+return `
+<b>Machine Learning</b> is a method where computers learn patterns from data and use them to make predictions or decisions.<br><br>
+Main types:<br>
+• Supervised Learning<br>
+• Unsupervised Learning<br>
+• Reinforcement Learning<br><br>
+<b>Real-world example:</b> Predicting whether an email is spam.
+`;
+}
+
+if(q.includes("sql")){
+return `
+<b>SQL</b> is used to store, retrieve and manipulate data in relational databases.<br><br>
+Example:<br>
+<code>SELECT name FROM students WHERE marks > 80;</code><br><br>
+This retrieves students whose marks are above 80.
+`;
+}
+
+if(q.includes("viva")){
+return `
+🎤 <b>Viva Question:</b><br><br>
+Explain the main objective of your project in your own words.<br><br>
+Try answering first. I can evaluate your response in Viva Mode.
+`;
+}
+
+return `
+I understand your question about <b>${escapeHTML(q)}</b>.<br><br>
+For this demo, I can provide guided learning for topics such as <b>Python, SQL, DBMS, AI, Machine Learning and Data Analytics</b>.<br><br>
+💡 Try asking: <i>"Explain normalization simply"</i> or <i>"Give me Python exam points"</i>.
+`;
+}
+
+function escapeHTML(str){
+return str.replace(/[&<>"']/g,m=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+}[m]));
+}
+
+
+/* =========================
+   NOTES ANALYZER
+========================= */
+
+document.getElementById("fileInput").addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+document.getElementById("fileName").innerHTML=
+"✅ Selected: <b>"+escapeHTML(file.name)+"</b>";
+
+showToast("Study material loaded!");
+
+document.getElementById("summary").innerHTML=`
+<b>AI-generated learning summary</b><br><br>
+The uploaded material has been recognized as study content.
+LearnX can organize the material into concepts, exam points,
+practice questions and revision resources.
+<br><br>
+📌 <b>Next:</b> Choose an action below to generate learning resources.
+`;
+
+document.getElementById("conceptTags").innerHTML=`
+<span class="tag">Core Concepts</span>
+<span class="tag">Important Definitions</span>
+<span class="tag">Applications</span>
+<span class="tag">Exam Topics</span>
+<span class="tag">Examples</span>
+`;
+
+document.getElementById("examPoints").innerHTML=`
+• Learn the important definitions<br>
+• Understand the main concepts<br>
+• Remember key advantages and applications<br>
+• Practice examples<br>
+• Prepare short and long-answer questions
+`;
+
+document.getElementById("generatedQuestions").innerHTML=`
+1. Define the main concept discussed in the material.<br><br>
+2. Explain the concept with an example.<br><br>
+3. What are its advantages and applications?<br><br>
+4. Compare the important concepts.
+`;
+
+});
+
+function generateNotes(type){
+
+let text="";
+
+if(type==="summary"){
+text=`<b>Smart Summary</b><br><br>
+LearnX identifies the main ideas, removes unnecessary information and organizes the material into easy-to-study sections.
+<br><br>
+⭐ Main idea → Key concepts → Examples → Applications → Exam points`;
+}
+
+if(type==="exam"){
+text=`<b>Exam Preparation Pack</b><br><br>
+⭐ Important definitions<br>
+⭐ Key concepts<br>
+⭐ Advantages / disadvantages<br>
+⭐ Applications<br>
+⭐ Comparison questions<br>
+⭐ Short-answer and long-answer practice`;
+}
+
+if(type==="quiz"){
+text=`<b>AI Quiz Generated</b><br><br>
+The material can be transformed into adaptive MCQs where the next question changes according to the student's performance.<br><br>
+Go to <b>Adaptive Quiz</b> to start practice.`;
+}
+
+if(type==="flash"){
+text=`<b>Flashcards Generated</b><br><br>
+Front: What is the main concept?<br>
+Back: The core definition and explanation from the study material.<br><br>
+Additional cards can cover definitions, examples, applications and comparisons.`;
+}
+
+if(type==="viva"){
+text=`<b>Viva Questions</b><br><br>
+1. Explain the main concept.<br>
+2. Why is it important?<br>
+3. Give a real-world application.<br>
+4. What are its limitations?<br>
+5. How would you implement it?`;
+}
+
+document.getElementById("summary").innerHTML=text;
+showToast("AI resource generated!");
+}
+
+
+/* =========================
+   CONCEPT MAP
+========================= */
+
+function createConceptMap(){
+
+const topic=document.getElementById("conceptInput").value.trim()||"Machine Learning";
+
+document.getElementById("conceptMap").innerHTML=`
+
+<div style="display:inline-block;background:#6366f1;color:white;padding:18px 28px;border-radius:15px;font-weight:bold">
+${escapeHTML(topic)}
+</div>
+
+<div style="margin:18px">↓</div>
+
+<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+
+<div class="tag">📌 Definition</div>
+<div class="tag">🧩 Components</div>
+<div class="tag">⚙️ Process</div>
+<div class="tag">💡 Examples</div>
+<div class="tag">🌍 Applications</div>
+<div class="tag">📝 Exam Points</div>
+
+</div>
+
+<div style="margin:18px">↓</div>
+
+<div class="outputBox">
+<b>AI Learning Path</b><br><br>
+Understand → Connect → Apply → Practice → Evaluate
+</div>
+`;
+
+showToast("Concept map created!");
+}
+
+
+/* =========================
+   ADAPTIVE QUIZ
+========================= */
+
+const quizData=[
+{
+q:"Which normal form removes repeating groups?",
+options:["1NF","2NF","3NF","BCNF"],
+answer:0,
+explain:"1NF requires values to be atomic and removes repeating groups."
+},
+{
+q:"Which language is widely used for data analysis?",
+options:["Python","HTML","CSS","XML"],
+answer:0,
+explain:"Python is widely used in data analysis because of libraries such as Pandas and NumPy."
+},
+{
+q:"What does SQL stand for?",
+options:["Structured Query Language","Simple Question Language","System Query Logic","Sequential Query Language"],
+answer:0,
+explain:"SQL stands for Structured Query Language."
+},
+{
+q:"Which is a supervised learning task?",
+options:["Classification","Clustering","Dimensionality reduction","Association mining"],
+answer:0,
+explain:"Classification learns from labelled training examples."
+},
+{
+q:"Which component allows an AI system to use relevant external information?",
+options:["Context","CSS","Compiler","Keyboard"],
+answer:0,
+explain:"Context provides relevant information to guide the AI response."
+},
+{
+q:"Which metric is useful for evaluating classification models?",
+options:["F1-score","File size","Screen resolution","Keyboard speed"],
+answer:0,
+explain:"F1-score combines precision and recall."
+},
+{
+q:"What is data redundancy?",
+options:["Unnecessary duplication of data","Data encryption","Data visualization","Data deletion"],
+answer:0,
+explain:"Data redundancy means storing duplicate or unnecessary copies of information."
+},
+{
+q:"What is a primary key?",
+options:["A unique identifier for a record","A duplicate field","A password","A chart"],
+answer:0,
+explain:"A primary key uniquely identifies each record in a relational table."
+},
+{
+q:"What does AI primarily attempt to enable machines to do?",
+options:["Perform tasks requiring intelligent behavior","Only store files","Only display webpages","Only calculate numbers"],
+answer:0,
+explain:"AI enables machines to perform tasks associated with intelligent behavior."
+},
+{
+q:"Which technology is useful for understanding images in a multimodal AI system?",
+options:["Computer vision","Only CSS","Only SQL","Only HTML"],
+answer:0,
+explain:"Computer vision techniques help AI systems process and understand visual information."
+}
+];
+
+let currentQuestion=0;
+let quizScore=0;
+let selected=-1;
+let revealed=false;
+
+function loadQuestion(){
+
+if(currentQuestion>=quizData.length){
+
+document.getElementById("quizArea").innerHTML=`
+<div style="text-align:center;padding:30px">
+<div style="font-size:55px">🏆</div>
+<h2>Quiz Complete!</h2>
+<p style="margin:12px 0">You scored <b>${quizScore}/${quizData.length}</b></p>
+<div class="outputBox">
+${quizScore>=8?"Excellent! 🔥":"Good effort! 💪 Keep practicing your weak topics."}
+</div>
+<button class="btn" onclick="restartQuiz()">Take Again</button>
+</div>
+`;
+
+document.getElementById("quizProgress").style.width="100%";
+return;
+}
+
+let q=quizData[currentQuestion];
+
+document.getElementById("question").textContent=q.q;
+
+document.getElementById("options").innerHTML=
+q.options.map((x,i)=>
+`<button class="option" onclick="selectOption(${i})">${String.fromCharCode(65+i)}. ${x}</button>`
+).join("");
+
+document.getElementById("feedback").className="feedback";
+document.getElementById("feedback").innerHTML="";
+
+document.getElementById("revealBtn").style.display="inline-block";
+document.getElementById("nextBtn").style.display="none";
+
+selected=-1;
+revealed=false;
+
+document.getElementById("quizProgress").style.width=
+((currentQuestion)/quizData.length*100)+"%";
+
+let level=currentQuestion<3?"Easy":currentQuestion<7?"Medium":"Hard";
+document.getElementById("difficulty").textContent=level;
+}
+
+function selectOption(i){
+
+if(revealed)return;
+
+selected=i;
+
+document.querySelectorAll(".option").forEach((b,index)=>{
+b.classList.toggle("selected",index===i);
+});
+
+}
+
+function revealAnswer(){
+
+if(selected===-1){
+showToast("Please select an answer first.");
+return;
+}
+
+if(revealed)return;
+
+revealed=true;
+
+const q=quizData[currentQuestion];
+const buttons=document.querySelectorAll(".option");
+
+buttons[q.answer].classList.add("correct");
+
+if(selected===q.answer){
+
+quizScore++;
+document.getElementById("feedback").innerHTML=
+"✅ <b>Correct!</b><br>"+q.explain;
+document.getElementById("feedback").style.background="#ecfdf5";
+}else{
+
+buttons[selected].classList.add("wrong");
+
+document.getElementById("feedback").innerHTML=
+"❌ <b>Not quite.</b><br><br>"+
+"<b>Correct answer:</b> "+q.options[q.answer]+"<br><br>"+
+q.explain;
+
+document.getElementById("feedback").style.background="#fef2f2";
+}
+
+document.getElementById("feedback").className="feedback show";
+
+document.getElementById("quizScore").textContent=quizScore;
+
+document.getElementById("revealBtn").style.display="none";
+document.getElementById("nextBtn").style.display="inline-block";
+
+document.getElementById("xp").textContent=
+(1240+quizScore*10)+" XP";
+}
+
+function nextQuestion(){
+
+currentQuestion++;
+loadQuestion();
+}
+
+function restartQuiz(){
+
+currentQuestion=0;
+quizScore=0;
+document.getElementById("quizScore").textContent=0;
+
+document.getElementById("quizArea").innerHTML=`
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+<div class="feedback" id="feedback"></div>
+<div class="row" style="margin-top:18px">
+<button class="btn" id="revealBtn" onclick="revealAnswer">Reveal Answer</button>
+<button class="btn secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+</div>
+`;
+
+loadQuestion();
+}
+
+loadQuestion();
+
+
+/* =========================
+   REVISION
+========================= */
+
+function teachWeak(){
+
+openModal(
+"🧑‍🏫 Learn Your Weak Topic",
+`
+<h3>DBMS Normalization</h3>
+<br>
+<b>Step 1 — Understand</b><br>
+Normalization organizes data into suitable tables and reduces unnecessary duplication.
+<br><br>
+<b>Step 2 — Remember</b><br>
+1NF → Atomic values<br>
+2NF → Remove partial dependency<br>
+3NF → Remove transitive dependency
+<br><br>
+<b>Step 3 — Apply</b><br>
+Take a student-course database and identify how it can be divided into related tables.
+<br><br>
+<b>Step 4 — Practice</b><br>
+Take the adaptive quiz again.
+`
+);
+
+}
+
+function revisionQuiz(){
+openFeature("quiz");
+showToast("Revision quiz started!");
+}
+
+
+/* =========================
+   FLASHCARDS
+========================= */
+
+const cards=[
+["What is normalization in DBMS?","A database design process used to reduce redundancy and improve consistency."],
+["What is Python?","A high-level programming language widely used for programming, data analysis and AI."],
+["What is SQL?","A language used to communicate with relational databases."],
+["What is supervised learning?","Machine learning using labelled training data."],
+["What is context in AI?","Relevant information provided to guide an AI model's response."]
+];
+
+let cardIndex=0;
+let cardBack=false;
+
+function renderCard(){
+
+const c=cards[cardIndex];
+
+document.getElementById("flashcard").innerHTML=`
+<div>
+${cardBack?c[1]:c[0]}
+<small>${cardBack?"Click to see question":"Click to reveal answer"}</small>
+</div>
+`;
+
+}
+
+function flipCard(){
+cardBack=!cardBack;
+renderCard();
+}
+
+function nextCard(){
+cardIndex=(cardIndex+1)%cards.length;
+cardBack=false;
+renderCard();
+}
+
+function previousCard(){
+cardIndex=(cardIndex-1+cards.length)%cards.length;
+cardBack=false;
+renderCard();
+}
+
+
+/* =========================
+   EXAM GENERATOR
+========================= */
+
+function generateExamQuestions(){
+
+const topic=document.getElementById("examTopic").value;
+const type=document.getElementById("examType").value;
+
+let html="";
+
+if(type==="MCQ"){
+html=`
+1. Which concept is most closely related to ${escapeHTML(topic)}?<br><br>
+A. Core concept<br>
+B. Unrelated concept<br>
+C. Random concept<br>
+D. None<br><br>
+2. Which is an important application of ${escapeHTML(topic)}?<br><br>
+A. Application A<br>
+B. Application B<br>
+C. Application C<br>
+D. Application D
+`;
+}else{
+html=`
+<b>${escapeHTML(type)} — ${escapeHTML(topic)}</b><br><br>
+1. Define ${escapeHTML(topic)} and explain its importance.<br><br>
+2. Explain the main concepts involved in ${escapeHTML(topic)} with an example.<br><br>
+3. Discuss the advantages, limitations and applications of ${escapeHTML(topic)}.<br><br>
+4. Compare two important concepts related to ${escapeHTML(topic)}.<br><br>
+5. Explain a real-world use case of ${escapeHTML(topic)}.
+`;
+}
+
+document.getElementById("examOutput").innerHTML=html;
+
+showToast("Question bank generated!");
+}
+
+
+/* =========================
+   VIVA
+========================= */
+
+const vivaQuestions=[
+"Why did you choose Vision Transformers for your project?",
+"What is the main objective of your project?",
+"What problem does your project solve?",
+"Why is your chosen dataset suitable?",
+"What evaluation metrics did you use?",
+"What are the limitations of your system?",
+"How can your project be improved in the future?"
+];
+
+let vivaIndex=0;
+
+function nextViva(){
+
+vivaIndex=(vivaIndex+1)%vivaQuestions.length;
+
+document.getElementById("vivaQuestion").textContent=
+vivaQuestions[vivaIndex];
+
+document.getElementById("vivaAnswer").value="";
+document.getElementById("vivaResult").innerHTML=
+"Answer the new question to receive feedback.";
+
+}
+
+function evaluateViva(){
+
+const answer=document.getElementById("vivaAnswer").value.trim();
+
+if(!answer){
+showToast("Please enter your answer first.");
+return;
+}
+
+let score=Math.min(95,50+Math.floor(answer.length/5));
+
+let feedback="";
+
+if(answer.length<50){
+feedback="Your answer is too short. Add the objective, technical approach and reason.";
+}else if(answer.length<120){
+feedback="Good start. Add more technical details and a practical example.";
+}else{
+feedback="Strong answer! You have explained the topic with reasonable detail. For a better viva answer, mention specific technical components and results.";
+}
+
+document.getElementById("vivaResult").innerHTML=`
+<h3>🎯 Viva Score: ${score}/100</h3>
+<br>
+<b>Technical Understanding:</b> ${Math.min(95,score+2)}%
+<br>
+<b>Completeness:</b> ${score}%
+<br>
+<b>Feedback:</b><br>
+${feedback}
+<br><br>
+<b>Tip:</b> Structure your answer as:
+Problem → Approach → Technology → Result → Future Scope.
+`;
+
+}
+
+
+/* =========================
+   STUDY PLAN
+========================= */
+
+function generatePlan(){
+
+const subjects=document.getElementById("subjects").value.split(",");
+const hours=document.getElementById("hours").value;
+
+let html="";
+
+subjects.forEach((s,i)=>{
+
+html+=`
+<div class="day">
+<b>Day ${i+1} — ${escapeHTML(s.trim())}</b><br><br>
+⏱️ ${hours} hours<br>
+📖 Learn core concepts<br>
+✍️ Practice examples<br>
+🎯 Take a mini quiz<br>
+🔄 Review mistakes
+</div>
+`;
+
+});
+
+document.getElementById("studyPlan").innerHTML=html;
+
+showToast("Personalized study plan created!");
+}
+
+
+/* =========================
+   TEACHER MODE
+========================= */
+
+function teacherAction(type){
+
+const data={
+
+question:`
+<h3>📋 AI Question Bank</h3>
+<br>
+• 5 basic questions<br>
+• 5 intermediate questions<br>
+• 5 application-based questions<br>
+• 5 higher-order thinking questions<br><br>
+Questions can be generated from uploaded course material.
+`,
+
+objective:`
+<h3>🎯 Learning Objectives</h3>
+<br>
+After completing the lesson, students should be able to:<br><br>
+1. Define the main concept.<br>
+2. Explain the underlying process.<br>
+3. Apply the concept to a real-world problem.<br>
+4. Analyze examples.<br>
+5. Evaluate possible solutions.
+`,
+
+quiz:`
+<h3>🧪 Class Quiz</h3>
+<br>
+AI can create an interactive quiz based on the teacher's uploaded material, with different difficulty levels and automatic evaluation.
+`,
+
+analysis:`
+<h3>📊 Student Analysis</h3>
+<br>
+Common weak areas:<br><br>
+🔴 DBMS Normalization<br>
+🟡 Machine Learning Evaluation<br>
+🟢 Python Fundamentals<br><br>
+<b>Recommendation:</b> Provide targeted revision material for weak areas.
+`,
+
+ideas:`
+<h3>💡 Teaching Ideas</h3>
+<br>
+• Real-world case study<br>
+• Group problem solving<br>
+• Concept mapping<br>
+• Quick classroom quiz<br>
+• Peer explanation activity<br>
+• Application challenge
+`,
+
+lesson:`
+<h3>📅 Lesson Planner</h3>
+<br>
+<b>Introduction:</b> 10 min<br>
+<b>Concept Explanation:</b> 20 min<br>
+<b>Example:</b> 10 min<br>
+<b>Student Activity:</b> 15 min<br>
+<b>Quiz:</b> 10 min<br>
+<b>Reflection:</b> 5 min
+`
+};
+
+openModal("👩‍🏫 Teacher AI Assistant",data[type]);
+
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function openModal(title,content){
+
+document.getElementById("modalTitle").textContent=title;
+document.getElementById("modalContent").innerHTML=content;
+
+document.getElementById("modal").classList.add("show");
+}
+
+function closeModal(){
+document.getElementById("modal").classList.remove("show");
+}
+
+window.onclick=function(e){
+if(e.target===document.getElementById("modal")){
+closeModal();
+}
+}
+
+
+/* =========================
+   INITIALIZATION
+========================= */
+
+renderCard();
+
+</script>
+
+</body>
+</html>
